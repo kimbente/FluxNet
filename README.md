@@ -1,5 +1,11 @@
 # FluxNet
 
+| Field    | Description                                                                           |
+| -------- | ------------------------------------------------------------------------------------- |
+| `time`   | 1979–2021 (yearly data)                                                               |
+| `x`, `y` | Already in Antarctic Polar Stereographic Projection [EPSG:3031](https://epsg.io/3031) |
+| `smb`    | **mm i.e. per year** (i.e. = ice equivalent)                                                                 |
+
 # Inputs
 
 ## Ice thickenss (h)

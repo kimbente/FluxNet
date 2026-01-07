@@ -1,0 +1,5 @@
+# Data will be too big
+data/*
+
+# Python cache
+__pycache__/

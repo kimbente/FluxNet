@@ -14,6 +14,10 @@ class _ResBlock(nn.Module):
         out = self.lin2(self.act(self.lin1(h)))
         return self.act(h + out)
 
+########################
+####### FluxNet  #######
+########################
+
 class FluxNet(nn.Module):
     """
     2D FluxNet model that represents a divergence-free and curl-free vector field
@@ -69,18 +73,18 @@ class FluxNet(nn.Module):
         # J∇ψ in 2D: (∂ψ/∂y, -∂ψ/∂x)
         J_grad_psi = grad_psi.flip(-1) * torch.tensor([1.0, -1.0], device = x.device, dtype = x.dtype)
 
-        # Combine
-        v = J_grad_psi + grad_phi
+        # Combine into vector field
+        q = J_grad_psi + grad_phi
 
         if return_parts or return_potentials:
-            out = (v,)
+            out = (q,)
             if return_parts:
                 out += (J_grad_psi, grad_phi)
             if return_potentials:
                 out += (psi, phi)
             return out
 
-        return v
+        return q
     
 ########################
 ### Divergence field ###
@@ -121,3 +125,49 @@ def compute_divergence_field(mean_pred, x_grad):
         )[0][:, 1])
     
     return div_field
+
+########################
+#### Residual MLP  #####
+########################
+
+# same number of trainable parameters
+
+class ResMLP(nn.Module):
+    # predict vector field directly
+    def __init__(self, coordinate_dims = 2, hidden_dim = 256, n_hidden_layers = 6):
+        super().__init__()
+        assert coordinate_dims == 2
+        self.coordinate_dims = coordinate_dims
+        self.hidden_dim = hidden_dim
+
+        # Shared trunk (stack of fully connected layers with residual blocks)
+        # First projection (as in your code)
+        self.inp = nn.Sequential(
+            nn.Linear(coordinate_dims, hidden_dim),
+            nn.SiLU()
+        )
+        # Then n_hidden_layers residual blocks
+        # e.g. 6 residual blocks
+        self.trunk = nn.ModuleList([_ResBlock(hidden_dim) for _ in range(n_hidden_layers)])
+
+        # Predict vector field directly
+        self.qx = nn.Linear(hidden_dim, 1)
+        self.qy = nn.Linear(hidden_dim, 1)
+
+    def forward(self, x):
+        """
+        x: [N, 2] with requires_grad set (we set it if not)
+        returns: q = [qx, qy]  (shape [N, 2])
+        """
+
+        h = self.inp(x)
+        for blk in self.trunk:
+            h = blk(h)
+
+        qx = self.qx(h)
+        qy = self.qy(h)
+
+        # Combine into vector field
+        q = torch.cat([qx, qy], dim = -1)
+
+        return q

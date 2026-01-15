@@ -110,10 +110,10 @@ for n_run in range(1, N_RUNS + 1):
     # Save first run model
     if n_run == 1:
         # Save trained model
-        torch.save(resmlp_model.state_dict(), "trained_models/resmlp_trained_20epochs.pth")
+        torch.save(resmlp_model.state_dict(), f"trained_models/resmlp_trained_{EPOCHS}epochs.pth")
         # Save training loss convergence
         pd.DataFrame({"train_loss": train_losses}).to_csv(
-        "trained_models/resmlp_trained_20epochs_loss_convergence.csv", index = False)
+        f"trained_models/resmlp_trained_{EPOCHS}epochs_loss_convergence.csv", index = False)
     
     #### EVAL ####
     # Calculate training MAE and RMSE, test MAE and RMSE
@@ -136,4 +136,4 @@ for n_run in range(1, N_RUNS + 1):
 
 #### END RUN LOOP ####
 # Save run metrics
-pd.DataFrame(run_metrics).to_csv("results/resmlp_runs_metrics.csv", index = False)
+pd.DataFrame(run_metrics).to_csv(f"results/resmlp_runs_metrics_{EPOCHS}epochs.csv", index = False)

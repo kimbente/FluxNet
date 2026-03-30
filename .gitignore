@@ -9,7 +9,6 @@ data/flux_tensor.pt
 data/fluxnet_div_ross.nc
 data/target_grid_mask.nc
 data/tighter_ice_shelf_mask.nc
-data/train_flux_tensor.pt
 
 # Trained models are now included
 # trained_models/*

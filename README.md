@@ -1,13 +1,13 @@
 # FluxNet
 
-Reproducible code for **Deep Learning Ice Shelf Basal Melt Rates via Differentiable Physics** submission to [Climate Informatics 2026](https://wp.unil.ch/ci26/).
+This repository contains reproducible code for **Deep Learning Ice Shelf Basal Melt Rates via Differentiable Physics** (accepted to [Climate Informatics 2026](https://wp.unil.ch/ci26/)).
 
-We propose FluxNet, a physics-informed deep learning model that learns the mapping between location (x, y) and ice shelf flux (q = hv), so that the flux divergence field can be computed with automatic differentiation. Adjusted by prescribed surface mass balance (smb) and thickening fields (dh/dt), according to the mass balance equation, FluxNet generates continous geospatial basal mass balance (bmb) fields, i.e. basal melt estimates. 
+Our paper proposes FluxNet, a physics-informed deep learning model that learns the mapping between location (x, y) and ice shelf flux (q = hv), so that the flux divergence field can be computed with automatic differentiation. Adjusted by prescribed surface mass balance (SMB) and thickening fields (dh/dt), according to the mass balance equation, FluxNet generates continous geospatial basal mass balance (BMB) fields, i.e. basal melt estimates. 
 
 ![FluxNet Architecture](figures/paper_vis/FluxNet_architecture.png)
 
   
-FluxNet internally learns the Helmholz decomposition of the flux vector field, which can also be returned at inference. It thereby provides additional interpretable insights to modellers and domain experts.
+FluxNet internally learns the Helmholz decomposition of the flux vector field, which can also be returned at inference. It thereby provides additional interpretable insights to modellers and domain experts (XAI).
 
   
 ![Helmholtz decomposition](figures/paper_vis/Helmholtz_decomposition.png)
@@ -17,7 +17,7 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
 ## Pre-requisites
 - [models.py](models.py) contains the proposed FluxNet model, the ResMLP baseline model, and the function to compute flux divergence.
 - [regions.py](regions.py) contains the bounding box coordinates for the Ross Ice Shelf region. 
-- [configs.py](configs.py) defines all experiment hyperparameters.
+- [configs.py](configs.py) defines all experimental hyperparameters.
 
 ## Preprocessing
 - [preprocess__bmb_benchmark.ipynb](preprocess__bmb_benchmark.ipynb) preprocesses, reprojects and visualises the bmb reference/benchmark map by Adusumilli et al. (2020).
@@ -56,7 +56,7 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
 
 ## Ice thickenss (h)
 
-We use the Bedmap collection of ice thickness measurements. We combine all standardised .csv files from the Bedmap1, Bedmap2 and Bedmap3 collections from the [UK Polar Data Centre](https://www.bas.ac.uk/data/uk-pdc/). The lists of .csv files are visible on [this Bristish Antarctic Survey (BAS) webpage](https://www.bas.ac.uk/project/bedmap/#data).
+We use the Bedmap collection of ice thickness measurements. We combine all standardised .csv files from the Bedmap1, Bedmap2 and Bedmap3 collections from the [UK Polar Data Centre](https://www.bas.ac.uk/data/uk-pdc/). The lists of .csv files are visible on [this Bristish Antarctic Survey (BAS) webpage](https://www.bas.ac.uk/project/bedmap/#data). This preprocessing pipeline is discussed in depth (yet for a different region) at [https://github.com/kimbente/process_Bedmap3_source_data](https://github.com/kimbente/process_Bedmap3_source_data).
 
 Bedmap(3) references:
 - *Pritchard, Hamish D., et al. "Bedmap3 updated ice bed, surface and thickness gridded datasets for Antarctica." Scientific data 12.1 (2025): 414.*

@@ -1,6 +1,6 @@
 # Data will be too big
 data/*
-trained_models/*
+# trained_models/*
 archive/*
 
 # Python cache

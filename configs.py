@@ -5,3 +5,9 @@ BATCH_SIZE = 1024
 EPOCHS = 15
 # EPOCHS = 20
 W_DIRECTIONAL_GUIDANCE = 0.3
+
+LR_RANGE = [1e-4, 1e-3, 1e-2]
+
+# batch size that works with GPU
+KNN_BATCH_SIZE = 2048
+KNN_K = 16

@@ -175,3 +175,50 @@ def compute_divergence_field(mean_pred, x_grad):
         )[0][:, 1])
     
     return div_field
+
+###################################
+### BASELINE: KNN interpolation ###
+###################################
+
+def knn_interpolate(train_xy, train_val, test_xy, k = 16, mode = "idw", eps = 1e-10):
+    """
+    train_xy: (N, 2) 
+    train_val: (N, C)
+    test_xy: (M, 2) -> subset to make M small
+    """
+
+    # 1) Compute pair-wise distances between all test and training points (M x N)
+    dists = torch.cdist(test_xy, train_xy)  # (M, N)
+    # print(f"Distances shape: {dists.shape}")
+
+    # 2) Get k nearest neighbors
+    # overwrite dists to clear memory
+    dists, idx = torch.topk(dists, k, dim = 1, largest = False) # (M, k)
+
+    # 3) gather values
+    neighbors = train_val[idx]  # (M, k, C)
+
+    # 4) compute weights
+    if mode == "idw":
+        # eps avoids division by zero
+        weights = 1.0 / (dists + eps)
+
+    # Note: Gaussian kernel does not improve much here due to sparse sampling pattern.
+    elif mode == "gaussian":
+        sigma = dists.mean(dim = 1, keepdim = True) + eps
+        weights = torch.exp(-(dists ** 2) / (2 * sigma ** 2))
+
+    else:
+        raise ValueError("mode must be 'idw' or 'gaussian'")
+    
+    del dists  # clear memory
+
+    # 5) normalize
+    weights = weights / weights.sum(dim = 1, keepdim = True)
+
+    # 6) weighted sum
+    out = (weights.unsqueeze(-1) * neighbors).sum(dim = 1)
+
+    del neighbors, weights  # clear memory
+
+    return out

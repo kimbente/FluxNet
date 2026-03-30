@@ -1,13 +1,13 @@
 # Data files that are too large to be stored in GitHub
 # MODIS file is ~ 1 GB
 data/modis/*
-# Bedmap file is ~ 600 MB
+# Bedmap file is ~ 600 MB. Fully processed data is instead included in the repository.
 data/bedmap123_ross_onshelf_3M.csv
-# Flux tensor file is ~ 50 MB but is duplicate since train and test data are included in the repository
+# Flux tensor file is ~ 50 MB but is duplicate since train and test data are included in the repository.
 data/flux_tensor.pt
 
 data/fluxnet_div_ross.nc
-data/target_grid_mask.nc
+# data/target_grid_mask.nc
 data/tighter_ice_shelf_mask.nc
 
 # Trained models are now included

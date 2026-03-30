@@ -114,7 +114,7 @@ for n_run in range(1, N_RUNS + 1):
         torch.save(fluxnet_model.state_dict(), f"trained_models/fluxnet_trained_{EPOCHS}epochs.pth")
         # Save training loss convergence
         pd.DataFrame({"train_loss": train_losses}).to_csv(
-        f"trained_models/fluxnet_trained_{EPOCHS}epochs_loss_convergence.csv", index = False)
+        f"convergence/fluxnet_trained_{EPOCHS}epochs_loss_convergence.csv", index = False)
     
     #### EVAL ####
     # Calculate training MAE and RMSE, test MAE and RMSE

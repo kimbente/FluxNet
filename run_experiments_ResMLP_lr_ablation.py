@@ -6,7 +6,7 @@ import torch.nn as nn
 from torch.utils.data import TensorDataset, DataLoader
 import time
 
-from models import FluxNet
+from models import ResMLP
 from configs import N_RUNS, WEIGHT_DECAY, BATCH_SIZE, EPOCHS
 from configs import LR_RANGE
 
@@ -46,6 +46,7 @@ def eval_epoch(model, loader, device):
         err = model(Xb) - Yb
         mse_sum += (err**2).sum().item()
         mae_sum += err.abs().sum().item()
+        # Note: err.numel() gives the total number of elements in the error tensor, which is the same as the number of predictions made. This is used to calculate the average MSE and MAE across all predictions. (2D)
         n += err.numel()
     mse = mse_sum / n
     mae = mae_sum / n
@@ -58,7 +59,7 @@ def eval_epoch(model, loader, device):
 
 ### LR LOOP ###
 for LR in LR_RANGE:
-    
+
     print(f"Starting experiments with LR = {LR}...")
 
     # Fresh container for run metrics
@@ -80,19 +81,18 @@ for LR in LR_RANGE:
         t0 = time.perf_counter()
 
         # Initialize model, optimizer, loss function
-        fluxnet_model = FluxNet().to(device)
-        optim = torch.optim.AdamW(fluxnet_model.parameters(), lr = LR, weight_decay = WEIGHT_DECAY)
+        resmlp_model = ResMLP().to(device)
+        optim = torch.optim.AdamW(resmlp_model.parameters(), lr = LR, weight_decay = WEIGHT_DECAY)
         loss_function = nn.MSELoss()
 
         train_losses = []
 
         #### EPOCH LOOP ####
         for epoch in range(1, EPOCHS + 1):
-
-            # print to track
+            
             print(f"Starting epoch {epoch}/{EPOCHS}...")
             
-            fluxnet_model.train()
+            resmlp_model.train()
             train_loss_sum = 0.0
 
             #### BATCH LOOP ####
@@ -102,7 +102,7 @@ for LR in LR_RANGE:
 
                 optim.zero_grad(set_to_none=True)
 
-                Y_hat = fluxnet_model(X_batch)
+                Y_hat = resmlp_model(X_batch)
                 loss = loss_function(Y_hat, Y_batch)
 
                 loss.backward()
@@ -124,15 +124,15 @@ for LR in LR_RANGE:
         # Save first run model
         if n_run == 1:
             # Save trained model
-            torch.save(fluxnet_model.state_dict(), f"trained_models/fluxnet_trained_{EPOCHS}epochs_{LR}lr.pth")
+            torch.save(resmlp_model.state_dict(), f"trained_models/resmlp_trained_{EPOCHS}epochs_{LR}lr.pth")
             # Save training loss convergence
             pd.DataFrame({"train_loss": train_losses}).to_csv(
-            f"convergence/fluxnet_trained_{EPOCHS}epochs_{LR}lr_loss_convergence.csv", index = False)
+            f"convergence/resmlp_trained_{EPOCHS}epochs_{LR}lr_loss_convergence.csv", index = False)
         
         #### EVAL ####
         # Calculate training MAE and RMSE, test MAE and RMSE
-        train_mse, train_mae, train_rmse = eval_epoch(fluxnet_model, train_loader_eval, device)
-        test_mse, test_mae, test_rmse = eval_epoch(fluxnet_model, test_loader, device)
+        train_mse, train_mae, train_rmse = eval_epoch(resmlp_model, train_loader, device)
+        test_mse, test_mae, test_rmse = eval_epoch(resmlp_model, test_loader, device)
 
         run_metrics.append({
             "run": n_run,
@@ -143,6 +143,7 @@ for LR in LR_RANGE:
             "test_mae": test_mae,
             "test_rmse": test_rmse,
             "run_minutes": run_seconds / 60.0,
+            "LR": LR,
         })
 
         # print(f"[Run {n_run:03d}] train_mae = {train_mae:.6f} | test_mae = {test_mae:.6f}")
@@ -150,4 +151,4 @@ for LR in LR_RANGE:
 
     #### END RUN LOOP ####
     # Save run metrics
-    pd.DataFrame(run_metrics).to_csv(f"results/fluxnet_runs_metrics_{EPOCHS}epochs_{LR}lr.csv", index = False)
+    pd.DataFrame(run_metrics).to_csv(f"results/resmlp_runs_metrics_{EPOCHS}epochs_{LR}lr.csv", index = False)

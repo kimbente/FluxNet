@@ -151,4 +151,4 @@ for LR in LR_RANGE:
 
     #### END RUN LOOP ####
     # Save run metrics
-    pd.DataFrame(run_metrics).to_csv(f"results/resmlp_runs_metrics_{EPOCHS}epochs_{LR}lr.csv", index = False)
+    pd.DataFrame(run_metrics).to_csv(f"results/resmlp_runs_metrics_{EPOCHS}epochs_{LR}lr_{N_RUNS}runs.csv", index = False)

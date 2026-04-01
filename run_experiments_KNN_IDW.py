@@ -30,8 +30,8 @@ test_loader = DataLoader(test_dataset, batch_size = KNN_BATCH_SIZE, shuffle = Fa
 # Container for k metrics
 k_metrics = []
 
-# 1 and 4, 10, 16, 22, 28
-for k in [1] + list(range(4, 32, 6)):
+# 1, 2 and 4, 10, 16, 22, 28, 32 (we use 8 numbers for consistency with other experiments that depend on initialisation)
+for k in [1, 2] + list(range(4, 36, 6)):
     KNN_K = k
 
     print(f"Evaluating KNN with k = {KNN_K}...")

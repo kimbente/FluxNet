@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import math
 
 ########################
 #### Residual Block ###
@@ -77,6 +78,96 @@ class FluxNet(nn.Module):
         J_grad_psi = grad_psi.flip(-1) * torch.tensor([1.0, -1.0], device = x.device, dtype = x.dtype)
 
         # Combine into vector field
+        q = J_grad_psi + grad_phi
+
+        if return_parts or return_potentials:
+            out = (q,)
+            if return_parts:
+                out += (J_grad_psi, grad_phi)
+            if return_potentials:
+                out += (psi, phi)
+            return out
+
+        return q
+
+##################################
+####### DualBranchFluxNet  #######
+##################################
+
+class DualBranchFluxNet(nn.Module):
+    """
+    2D FluxNet model that dynamically scales its hidden dimension 
+    to match the total parameter count of a standard 6-layer 256-wide FluxNet, 
+    while using a 4-shared, 2-split trunk configuration.
+    """
+    def __init__(self, coordinate_dims = 2, target_hidden_dim = 256, n_shared_layers = 4, n_branch_layers = 2):
+        super().__init__()
+        assert coordinate_dims == 2
+        self.coordinate_dims = coordinate_dims
+        
+        # --- Dynamic Parameter Scaling Math ---
+        # Original architecture had 6 total blocks. New architecture has (n_shared + 2 * n_branch) total blocks.
+        original_blocks = 6
+        new_blocks = n_shared_layers + (2 * n_branch_layers)
+        
+        # Scale the width down using the square root of the block ratio
+        scaled_dim = target_hidden_dim * math.sqrt(original_blocks / new_blocks)
+        
+        # Round to the nearest even number for clean GPU tensor operations
+        self.hidden_dim = int(round(scaled_dim / 2) * 2) 
+        
+        # Print a note so you know what width it chose during creation
+        print(f"[DualBranchFluxNet] Balanced hidden_dim adjusted to: {self.hidden_dim} (Target was {target_hidden_dim})")
+
+        # Shared trunk initialization using the balanced width
+        self.inp = nn.Sequential(
+            nn.Linear(coordinate_dims, self.hidden_dim),
+            nn.SiLU()
+        )
+        
+        # Split trunk: 4 shared layers + 2 branch layers each = 8 blocks total at a narrower width
+        self.shared_trunk = nn.ModuleList([_ResBlock(self.hidden_dim) for _ in range(n_shared_layers)])
+        self.psi_trunk = nn.ModuleList([_ResBlock(self.hidden_dim) for _ in range(n_branch_layers)])
+        self.phi_trunk = nn.ModuleList([_ResBlock(self.hidden_dim) for _ in range(n_branch_layers)])
+
+        # Two scalar heads: Psi and Phi
+        self.head_df_psi = nn.Linear(self.hidden_dim, 1)
+        self.head_cf_phi = nn.Linear(self.hidden_dim, 1)
+
+    def _grad_scalar(self, s, x):
+        return torch.autograd.grad(
+            outputs = s.sum(),
+            inputs  = x,
+            create_graph = True,
+        )[0]
+
+    def forward(self, x, return_parts = False, return_potentials = False):
+        if not x.requires_grad:
+            x = x.clone().detach().requires_grad_(True)
+
+        # Pass through the shared portion of the trunk
+        h_shared = self.inp(x)
+        for blk in self.shared_trunk:
+            h_shared = blk(h_shared)
+
+        # Split into independent branches
+        h_psi = h_shared
+        for blk in self.psi_trunk:
+            h_psi = blk(h_psi)
+            
+        h_phi = h_shared
+        for blk in self.phi_trunk:
+            h_phi = blk(h_phi)
+
+        # Final scalar head projections
+        psi = self.head_df_psi(h_psi)
+        phi = self.head_cf_phi(h_phi)
+
+        # Math & Physics reconstruction
+        grad_psi = self._grad_scalar(psi, x)
+        grad_phi = self._grad_scalar(phi, x)
+
+        J_grad_psi = grad_psi.flip(-1) * torch.tensor([1.0, -1.0], device = x.device, dtype = x.dtype)
         q = J_grad_psi + grad_phi
 
         if return_parts or return_potentials:

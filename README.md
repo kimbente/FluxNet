@@ -18,6 +18,7 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
 - [models.py](models.py) contains the proposed FluxNet model, the ResMLP baseline model, and the function to compute flux divergence.
 - [regions.py](regions.py) contains the bounding box coordinates for the Ross Ice Shelf region. 
 - [configs.py](configs.py) defines all experimental hyperparameters.
+- [LICENSE](LICENSE) contains the MIT license under which this code is released.
 
 ## Preprocessing
 - [preprocess__bmb_benchmark.ipynb](preprocess__bmb_benchmark.ipynb) preprocesses, reprojects and visualises the bmb reference/benchmark map by Adusumilli et al. (2020).

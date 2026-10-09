@@ -26,7 +26,7 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
 - [preprocess__h_thickness.ipynb](preprocess__h_thickness.ipynb) proprocesses, cleans, and visualises all ice thickness measurements from the Bedmap3 source data collection for Ross Ice Shelf.
 - [preprocess__smb_surface_mass_balance.ipynb](preprocess__smb_surface_mass_balance.ipynb) preprocesses, reprojects and visualises the surface mass balance (smb) estimates by Noël et al. (2023).
 - [preprocess__target_grid_bedmap3.ipynb](preprocess__target_grid_bedmap3.ipynb) generates the target grid based on Bedmap3.
-    - It outputs the target grid to [data/tighter_ice_shelf_mask.nc](data/tighter_ice_shelf_mask.nc).
+    - It outputs the target grid to [data/target_grid_mask.nc](data/target_grid_mask.nc).
 - [preprocess__v_velocity.ipynb](preprocess__v_velocity.ipynb) preprocesses, reprojects and visualises the ice surface velocity data, i.e. MEaSUREs phase-based ice velocity map.
 - [preprocess_generate_q_flux.ipynb](preprocess_generate_q_flux.ipynb) generates the full tensor of 3.2 million flux vector data points by interpolating the ice velocity field at the locations of the cleaned ice thickness observations, multiplying these, normalising x and y, and scaling the flux vectors to a more computationally friendly range. 
   - It outputs the full flux tensor to [data/flux_tensor.pt](data/flux_tensor.pt).
@@ -98,3 +98,11 @@ Reference:
     - **Antarctic ice shelf melt rates**: Average basal melt rates for Antarctic ice shelves for the 2010–2018 period at high spatial resolution, estimated using CryoSat-2 data. This data file was last updated on 2020-06-11.
     - Description: Average basal melt rates for Antarctic ice shelves for the 2010–2018 period at high spatial resolution, estimated using CryoSat-2 data. Interpolated values in regions with missing data are provided as a separate field. We are currently working on using ICESat-2 data to improve the estimates over regions with missing CryoSat-2 data.
 - [Link to accompanying UCSD Scripps glaciology Github repository](https://github.com/sioglaciology/ice_shelf_change). Refer to *ead_melt_rate_file.ipynb* notebook for the dataset loading pipeline.
+
+# Hardware & Software
+
+NVIDIA GeForce RTX 4090 CUDA Version: 12.2 
+
+# License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

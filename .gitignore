@@ -10,7 +10,7 @@ data/fluxnet_div_ross.nc
 
 # Trained models are now included
 # trained_models/*
-archive/*
+archive_hidden/*
 
 # Python cache
 __pycache__/

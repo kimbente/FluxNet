@@ -1,0 +1,22 @@
+name: fluxnet_env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - ipykernel
+  - pip:
+      # PyTorch CUDA 12.1 wheels
+      - --extra-index-url https://download.pytorch.org/whl/cu121
+      - torch==2.5.1+cu121
+      # scientific stack
+      - numpy==2.2.6
+      - pandas==2.3.3
+      - scipy==1.15.3
+      - xarray==2025.6.1
+      - h5netcdf==1.8.1
+      - h5py==3.16.0
+      - pyproj==3.7.1
+      # plotting
+      - matplotlib==3.9.4
+      - cmocean==4.0.3

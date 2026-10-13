@@ -7,7 +7,7 @@ Our paper proposes FluxNet, a physics-informed deep learning model that learns t
 ![FluxNet Architecture](figures/paper_vis/FluxNet_architecture.png)
 
   
-FluxNet internally learns the Helmholz decomposition of the flux vector field, which can also be returned at inference. It thereby provides additional interpretable insights to modellers and domain experts (XAI).
+FluxNet internally learns the Helmholz decomposition of the flux vector field, which can also be returned at inference. It thereby provides additional interpretable insights to modellers and domain experts.
 
   
 ![Helmholtz decomposition](figures/paper_vis/Helmholtz_decomposition.png)
@@ -103,7 +103,12 @@ Reference:
 
 # Hardware & Software
 
-NVIDIA GeForce RTX 4090 CUDA Version: 12.2 
+All experiments were run on a single NVIDIA GeForce RTX 4090 GPU (driver CUDA version 12.2) on a Linux server, using Python 3.10 and PyTorch 2.5.1 built for CUDA 12.1. The full list of dependencies with pinned versions is in [environment.yml](environment.yml). To recreate the environment:
+
+    conda env create -f environment.yml
+    conda activate fluxnet_env
+
+Preprocessing runs on CPU. Training and inference use the GPU; training FluxNet on all flux observations over Ross Ice Shelf takes approximately 24 minutes on this hardware.
 
 # License
 

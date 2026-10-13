@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-import xarray as xr
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 from models import knn_interpolate

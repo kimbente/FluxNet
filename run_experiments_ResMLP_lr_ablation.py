@@ -7,7 +7,7 @@ from torch.utils.data import TensorDataset, DataLoader
 import time
 
 from models import ResMLP
-from configs import N_RUNS, WEIGHT_DECAY, BATCH_SIZE, EPOCHS
+from configs import N_RUNS_ABLATIONS, WEIGHT_DECAY, BATCH_SIZE, EPOCHS
 from configs import LR_RANGE
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -66,9 +66,9 @@ for LR in LR_RANGE:
     run_metrics = []
 
     #### RUN LOOP ####
-    for n_run in range(1, N_RUNS + 1): 
+    for n_run in range(1, N_RUNS_ABLATIONS + 1): 
 
-        print(f"Starting run {n_run}/{N_RUNS}...")
+        print(f"Starting run {n_run}/{N_RUNS_ABLATIONS}...")
 
         # Set seeds for reproducibility
         torch.manual_seed(n_run)
@@ -151,4 +151,4 @@ for LR in LR_RANGE:
 
     #### END RUN LOOP ####
     # Save run metrics
-    pd.DataFrame(run_metrics).to_csv(f"results/resmlp_runs_metrics_{EPOCHS}epochs_{LR}lr_{N_RUNS}runs.csv", index = False)
+    pd.DataFrame(run_metrics).to_csv(f"results/resmlp_runs_metrics_{EPOCHS}epochs_{LR}lr_{N_RUNS_ABLATIONS}runs.csv", index = False)

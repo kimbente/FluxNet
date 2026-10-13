@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "FluxNet: Deep Learning Ice Shelf Basal Melt Rates via Differentiable Physics"
+version: 1.0.0
+date-released: 2026-10-13
+authors:
+  - family-names: Bente
+    given-names: Kim
+    orcid: "https://orcid.org/0000-0002-7126-7736"
+license: MIT
+repository-code: "https://github.com/kimbente/FluxNet"
+keywords:
+  - physics-informed machine learning
+  - differentiable physics
+  - ice shelves
+  - basal melt
+  - Antarctica
+  - Ross Ice Shelf
+  - Helmholtz decomposition

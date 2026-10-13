@@ -1,4 +1,4 @@
-# NOTE: Change these to your local paths
+# NOTE: Change these to your local paths or use the provided flux_tensors, /home/kim/FluxNet/data/test_flux_tensor.pt, and /home/kim/FluxNet/data/train_flux_tensor.pt directly to reproduce model results.
 
 # Reference model
 path_to_adusumulli_bmb = "/home/kim/data/adusumulli/ANT_iceshelf_melt_rates_CS2_2010-2018_v0.h5"

@@ -19,6 +19,7 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
 - [regions.py](regions.py) contains the bounding box coordinates for the Ross Ice Shelf region. 
 - [configs.py](configs.py) defines all experimental hyperparameters.
 - [LICENSE](LICENSE) contains the MIT license under which this code is released.
+- [paths.py](paths.py) contains the local paths to all (and all publically available) input data sets (SPECIFY HERE). However, to simply reproduce our model results, the provided flux_tensors can be used directly.
 
 ## Preprocessing
 - [preprocess__bmb_benchmark.ipynb](preprocess__bmb_benchmark.ipynb) preprocesses, reprojects and visualises the bmb reference/benchmark map by Adusumilli et al. (2020).
@@ -45,6 +46,7 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
     - saves results on train and test in [results](results).
 - [train_fluxnet_on_all_data.ipynb](train_fluxnet_on_all_data.ipynb) trains the FluxNet model on all available flux observations. 
     - Saves full FluxNet model to [fluxnet_trained_on_all_data](fluxnet_trained_on_all_data) folder.
+- [inference_fluxnet_on_all_data.ipynb](inference_fluxnet_on_all_data.ipynb) runs inference over the target grid.
 - [helmholtz_decomposition.ipynb](helmholtz_decomposition.ipynb) showcases how FluxNet performs a Helmholtz decomposition, which is both interpretable (XAI) and a physics-informed representation (PIML).
     - It outputs component visualisations to [figures/helmholtz_decomposition](figures/helmholtz_decomposition).
 - [visualise_results.ipynb](visualise_results.ipynb) explores the experimental results and visualises them in the form of of barcharts.

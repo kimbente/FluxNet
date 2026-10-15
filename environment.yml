@@ -5,18 +5,20 @@ dependencies:
   - python=3.10
   - pip
   - ipykernel
+  # scientific stack
+  - numpy=2.2.6
+  - pandas=2.3.3
+  - scipy=1.15.3
+  - xarray=2025.6.1
+  - h5netcdf=1.8.1
+  - h5py
+  - pyproj=3.7.1
+  - matplotlib=3.9.4
+  - cmocean
   - pip:
       # PyTorch CUDA 12.1 wheels
       - --extra-index-url https://download.pytorch.org/whl/cu121
+      # PyG wheels (for torch_cluster), matching torch 2.5 + cu121
+      - --find-links https://data.pyg.org/whl/torch-2.5.0+cu121.html
       - torch==2.5.1+cu121
-      # scientific stack
-      - numpy==2.2.6
-      - pandas==2.3.3
-      - scipy==1.15.3
-      - xarray==2025.6.1
-      - h5netcdf==1.8.1
-      - h5py==3.16.0
-      - pyproj==3.7.1
-      # plotting
-      - matplotlib==3.9.4
-      - cmocean==4.0.3
+      - torch_cluster==1.6.3+pt25cu121

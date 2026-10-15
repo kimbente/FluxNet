@@ -1,6 +1,6 @@
 # FluxNet
 
-This repository contains reproducible code for **Deep Learning Ice Shelf Basal Melt Rates via Differentiable Physics** (accepted to [Climate Informatics 2026](https://wp.unil.ch/ci26/)). You can find the [paper pdf here](https://github.com/freddy0218/ClimateInformatics2026/blob/main/Paper/Paper58_Deep%20Learning%20Ice%20Shelf%20Basal%20Melt%20Rates%20via%20Differentiable%20Physics.pdf). 
+This repository contains reproducible code for **Deep Learning Ice Shelf Basal Melt Rates via Differentiable Physics** (accepted to [Climate Informatics 2026](https://wp.unil.ch/ci26/)). You can find the [initial conference paper pdf here](https://github.com/freddy0218/ClimateInformatics2026/blob/main/Paper/Paper58_Deep%20Learning%20Ice%20Shelf%20Basal%20Melt%20Rates%20via%20Differentiable%20Physics.pdf). 
 
 Our paper proposes FluxNet, a physics-informed deep learning model that learns the mapping between location (x, y) and ice shelf flux (q = hv), so that the flux divergence field can be computed with automatic differentiation. Adjusted by prescribed surface mass balance (SMB) and thickening fields (dh/dt), according to the mass balance equation, FluxNet generates continous geospatial basal mass balance (BMB) fields, i.e. basal melt estimates. 
 
@@ -15,18 +15,18 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
 # Files
 
 ## Pre-requisites
-- [models.py](models.py) contains the proposed FluxNet model, the ResMLP baseline model, and the function to compute flux divergence.
+- [models.py](models.py) contains the proposed FluxNet model, the ResMLP baseline model, and the function that computes flux divergence.
 - [regions.py](regions.py) contains the bounding box coordinates for the Ross Ice Shelf region. 
 - [configs.py](configs.py) defines all experimental hyperparameters.
 - [LICENSE](LICENSE) contains the MIT license under which this code is released.
-- [paths.py](paths.py) contains the local paths to all (and all publically available) input data sets (SPECIFY HERE). However, to simply reproduce our model results, the provided flux_tensors can be used directly.
+- [paths.py](paths.py) contains the local paths to all input data sets (all publicly available). To fully reproduce the preprocessing, download these data sets as described below and **change these paths** to match where you saved them. However, to simply reproduce our model results, the provided flux_tensors (test, train, and combined) can be used directly.
 
 ## Preprocessing
 - [preprocess__bmb_benchmark.ipynb](preprocess__bmb_benchmark.ipynb) preprocesses, reprojects and visualises the bmb reference/benchmark map by Adusumilli et al. (2020).
 - [preprocess__dhdt_thickening.ipynb](preprocess__dhdt_thickening.ipynb) preprocesses, reprojects and visualises the long-term dh/dt data product provided by Adusumilli et al. (2020).
-- [preprocess__h_thickness.ipynb](preprocess__h_thickness.ipynb) proprocesses, cleans, and visualises all ice thickness measurements from the Bedmap3 source data collection for Ross Ice Shelf. Please refer over to [https://doi.org/10.5281/zenodo.23356503](https://doi.org/10.5281/zenodo.23356503) for the preprocessing pipeline used to generate the regional subset of Bedmap observations. 
+- [preprocess__h_thickness.ipynb](preprocess__h_thickness.ipynb) proprocesses, cleans, and visualises all ice thickness measurements from the Bedmap3 source data collection for Ross Ice Shelf. Please refer over to [https://doi.org/10.5281/zenodo.23356503](https://doi.org/10.5281/zenodo.23356503) for the preprocessing pipeline used to generate the regional subset of Bedmap observations used here. 
 - [preprocess__smb_surface_mass_balance.ipynb](preprocess__smb_surface_mass_balance.ipynb) preprocesses, reprojects and visualises the surface mass balance (smb) estimates by Noël et al. (2023).
-- [preprocess__target_grid_bedmap3.ipynb](preprocess__target_grid_bedmap3.ipynb) generates the target grid based on Bedmap3.
+- [preprocess__target_grid_bedmap3.ipynb](preprocess__target_grid_bedmap3.ipynb) generates the target grid based on the Bedmap3 grid.
     - It outputs the target grid to [data/target_grid_mask.nc](data/target_grid_mask.nc).
 - [preprocess__v_velocity.ipynb](preprocess__v_velocity.ipynb) preprocesses, reprojects and visualises the ice surface velocity data, i.e. MEaSUREs phase-based ice velocity map.
 - [preprocess_generate_q_flux.ipynb](preprocess_generate_q_flux.ipynb) generates the full tensor of 3.2 million flux vector data points by interpolating the ice velocity field at the locations of the cleaned ice thickness observations, multiplying these, normalising x and y, and scaling the flux vectors to a more computationally friendly range. 
@@ -47,9 +47,9 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
 - [train_fluxnet_on_all_data.ipynb](train_fluxnet_on_all_data.ipynb) trains the FluxNet model on all available flux observations. 
     - Saves full FluxNet model to [fluxnet_trained_on_all_data](fluxnet_trained_on_all_data) folder.
 - [inference_fluxnet_on_all_data.ipynb](inference_fluxnet_on_all_data.ipynb) runs inference over the target grid.
-- [helmholtz_decomposition.ipynb](helmholtz_decomposition.ipynb) showcases how FluxNet performs a Helmholtz decomposition, which is both interpretable (XAI) and a physics-informed representation (PIML).
+- [helmholtz_decomposition.ipynb](helmholtz_decomposition.ipynb) showcases how FluxNet performs a Helmholtz decomposition, which is both interpretable and a physics-informed representation (PIML).
     - It outputs component visualisations to [figures/helmholtz_decomposition](figures/helmholtz_decomposition).
-- [visualise_results.ipynb](visualise_results.ipynb) explores the experimental results and visualises them in the form of of barcharts.
+- [visualise_results.ipynb](visualise_results.ipynb) explores the experimental results and visualises them in the form of barcharts.
     - It outputs barcharts to [figures/barcharts](figures/helmholtz_barcharts).
 - [assemble_bmb.ipynb](assemble_bmb.ipynb) assembles our bmb map from FluxNet divergence estimates and prescibed smb and dh/dt inputs, all stored in [data/fluxnet_div_ross.nc](data/fluxnet_div_ross.nc).
 
@@ -59,7 +59,7 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
 
 ## Ice thickenss (h)
 
-We use the Bedmap collection of ice thickness measurements. We combine all standardised .csv files from the Bedmap1, Bedmap2 and Bedmap3 collections from the [UK Polar Data Centre](https://www.bas.ac.uk/data/uk-pdc/). The lists of .csv files are visible on [this Bristish Antarctic Survey (BAS) webpage](https://www.bas.ac.uk/project/bedmap/#data). This preprocessing pipeline is discussed in depth (yet for a different region) at [https://github.com/kimbente/process_Bedmap3_source_data](https://github.com/kimbente/process_Bedmap3_source_data).
+We use the Bedmap collection of ice thickness measurements. We combine all standardised .csv files from the Bedmap1, Bedmap2 and Bedmap3 collections from the [UK Polar Data Centre](https://www.bas.ac.uk/data/uk-pdc/). The lists of .csv files are visible on [this Bristish Antarctic Survey (BAS) webpage](https://www.bas.ac.uk/project/bedmap/#data). This preprocessing pipeline is presented in depth at [https://github.com/kimbente/Bedmap_Antarctica_source_data_preprocessing](https://github.com/kimbente/Bedmap_Antarctica_source_data_preprocessing) indexed under [https://doi.org/10.5281/zenodo.23356503](https://doi.org/10.5281/zenodo.23356503)
 
 Bedmap(3) references:
 - *Pritchard, Hamish D., et al. "Bedmap3 updated ice bed, surface and thickness gridded datasets for Antarctica." Scientific data 12.1 (2025): 414.*
@@ -79,6 +79,7 @@ We use interpolated [Higher Antarctic ice sheet accumulation and surface melt ra
 
 Reference:
 - *Noël, Brice, et al. "Higher Antarctic ice sheet accumulation and surface melt rates revealed at 2 km resolution." Nature communications 14.1 (2023): 7949.*
+- *Van Wessem, Jan Melchior, et al. "Modelling the climate and surface mass balance of polar ice sheets using RACMO2–Part 2: Antarctica (1979–2016)." The Cryosphere 12.4 (2018): 1479-1498.*
 
 ## Thickening rates (dh/dt)
 
@@ -101,9 +102,9 @@ Reference:
     - Description: Average basal melt rates for Antarctic ice shelves for the 2010–2018 period at high spatial resolution, estimated using CryoSat-2 data. Interpolated values in regions with missing data are provided as a separate field. We are currently working on using ICESat-2 data to improve the estimates over regions with missing CryoSat-2 data.
 - [Link to accompanying UCSD Scripps glaciology Github repository](https://github.com/sioglaciology/ice_shelf_change). Refer to *ead_melt_rate_file.ipynb* notebook for the dataset loading pipeline.
 
-# Hardware & Software
+# Hardware & software
 
-All experiments were run on a single NVIDIA GeForce RTX 4090 GPU (driver CUDA version 12.2) on a Linux server, using Python 3.10 and PyTorch 2.5.1 built for CUDA 12.1. The full list of dependencies with pinned versions is in [environment.yml](environment.yml). To recreate the environment:
+All experiments were run on a single NVIDIA GeForce RTX 4090 GPU (driver CUDA version 12.2) on a Linux server, using Python 3.10 and PyTorch 2.5.1 built for CUDA 12.1. The full list of dependencies with pinned versions is in [environment.yml](environment.yml). To recreate and activate the environment:
 
     conda env create -f environment.yml
     conda activate fluxnet_env

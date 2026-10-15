@@ -104,12 +104,12 @@ Reference:
 
 # Hardware & software
 
-All experiments were run on a single NVIDIA GeForce RTX 4090 GPU (driver CUDA version 12.2) on a Linux server, using Python 3.10 and PyTorch 2.5.1 built for CUDA 12.1. The full list of dependencies with pinned versions is in [environment.yml](environment.yml). To recreate and activate the environment:
+All experiments were run on a single NVIDIA GeForce RTX 4090 GPU (driver CUDA version 12.2) on a Linux server, using Python 3.10 and PyTorch 2.5.1 built for CUDA 12.1. The main packages and their versions are listed in [environment.yml](environment.yml); their dependencies are resolved automatically by the installer. To recreate and activate the environment:
 
     conda env create -f environment.yml
     conda activate fluxnet_env
 
-Preprocessing runs on CPU. Training and inference use the GPU; training FluxNet on all flux observations over Ross Ice Shelf takes approximately 24 minutes on this hardware.
+Preprocessing runs on CPU. Training and inference use the GPU. Training FluxNet on all flux observations over Ross Ice Shelf takes approximately 24 minutes on this hardware. Inference over 400000 grid cells (1000 x 1000 km on a 500 m grid) takes 72 seconds. 
 
 # License
 

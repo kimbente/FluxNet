@@ -1,5 +1,7 @@
 # FluxNet
 
+[![DOI](https://zenodo.org/badge/1128042874.svg)](https://doi.org/10.5281/zenodo.23384839)
+
 This repository contains reproducible code for **Deep Learning Ice Shelf Basal Melt Rates via Differentiable Physics** (accepted to [Climate Informatics 2026](https://wp.unil.ch/ci26/)). You can find the [initial conference paper pdf here](https://github.com/freddy0218/ClimateInformatics2026/blob/main/Paper/Paper58_Deep%20Learning%20Ice%20Shelf%20Basal%20Melt%20Rates%20via%20Differentiable%20Physics.pdf). 
 
 Our paper proposes FluxNet, a physics-informed deep learning model that learns the mapping between location (x, y) and ice shelf flux (q = hv), so that the flux divergence field can be computed with automatic differentiation. Adjusted by prescribed surface mass balance (SMB) and thickening fields (dh/dt), according to the mass balance equation, FluxNet generates continous geospatial basal mass balance (BMB) fields, i.e. basal melt estimates. 
@@ -114,3 +116,10 @@ Preprocessing runs on CPU. Training and inference use the GPU. Training FluxNet 
 # License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+# Citation
+
+If you use this code, please cite the archived version of this repository:
+
+[https://doi.org/10.5281/zenodo.23384839](https://doi.org/10.5281/zenodo.23384839)
+

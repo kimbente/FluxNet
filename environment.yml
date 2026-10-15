@@ -20,5 +20,6 @@ dependencies:
       - --extra-index-url https://download.pytorch.org/whl/cu121
       # PyG wheels (for torch_cluster), matching torch 2.5 + cu121
       - --find-links https://data.pyg.org/whl/torch-2.5.0+cu121.html
+      # NOTE: The following versions are what we used to match our hardware and CUDA version. If you have a different setup, you may need to adjust these versions accordingly.
       - torch==2.5.1+cu121
       - torch_cluster==1.6.3+pt25cu121

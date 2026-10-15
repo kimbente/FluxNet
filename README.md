@@ -24,7 +24,7 @@ FluxNet internally learns the Helmholz decomposition of the flux vector field, w
 ## Preprocessing
 - [preprocess__bmb_benchmark.ipynb](preprocess__bmb_benchmark.ipynb) preprocesses, reprojects and visualises the bmb reference/benchmark map by Adusumilli et al. (2020).
 - [preprocess__dhdt_thickening.ipynb](preprocess__dhdt_thickening.ipynb) preprocesses, reprojects and visualises the long-term dh/dt data product provided by Adusumilli et al. (2020).
-- [preprocess__h_thickness.ipynb](preprocess__h_thickness.ipynb) proprocesses, cleans, and visualises all ice thickness measurements from the Bedmap3 source data collection for Ross Ice Shelf.
+- [preprocess__h_thickness.ipynb](preprocess__h_thickness.ipynb) proprocesses, cleans, and visualises all ice thickness measurements from the Bedmap3 source data collection for Ross Ice Shelf. Please refer over to [https://doi.org/10.5281/zenodo.23356503](https://doi.org/10.5281/zenodo.23356503) for the preprocessing pipeline used to generate the regional subset of Bedmap observations. 
 - [preprocess__smb_surface_mass_balance.ipynb](preprocess__smb_surface_mass_balance.ipynb) preprocesses, reprojects and visualises the surface mass balance (smb) estimates by Noël et al. (2023).
 - [preprocess__target_grid_bedmap3.ipynb](preprocess__target_grid_bedmap3.ipynb) generates the target grid based on Bedmap3.
     - It outputs the target grid to [data/target_grid_mask.nc](data/target_grid_mask.nc).

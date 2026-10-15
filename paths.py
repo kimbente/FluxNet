@@ -5,6 +5,7 @@ path_to_adusumulli_bmb = "/home/kim/data/adusumulli/ANT_iceshelf_melt_rates_CS2_
 path_to_adusumulli_height_change = "/home/kim/data/adusumulli/ANT_iceshelf_height_changes_RA_1994_2018_v0.h5"
 
 # Bedmap source data
+# NOTE: These three files are generated using the following preprocessing pipeline: https://doi.org/10.5281/zenodo.23356503 (see https://github.com/kimbente/Bedmap_Antarctica_source_data_preprocessing)
 path_to_bedmap123 = "/home/kim/data/bedmap_raw_data/bedmap123.csv"
 path_to_bedmap123_ross = "/home/kim/data/bedmap_raw_data/bedmap123_ross.csv"
 path_to_bedmap123_metadata = "/home/kim/data/bedmap_raw_data/bedmap123_metadata.csv"
